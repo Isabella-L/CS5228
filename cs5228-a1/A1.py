@@ -59,7 +59,18 @@ def handle_nan(df_cars_nan):
 
     #########################################################################################
     ### Your code starts here ###############################################################
-
+    
+    # remove url column
+    df_cars_no_nan = df_cars_no_nan.drop(columns=['url'])
+    
+    # replace missing brand with 'unknown'
+    df_cars_no_nan['make'] = df_cars_no_nan['make'].fillna('unknown')
+    
+    # replace missing mileage with median mileage
+    df_cars_no_nan['mileage'] = df_cars_no_nan['mileage'].fillna(df_cars_no_nan['mileage'].median())
+    
+    # drop rows with missing price
+    df_cars_no_nan = df_cars_no_nan.dropna(subset=['price'])
     
 
     ### Your code ends here #################################################################
