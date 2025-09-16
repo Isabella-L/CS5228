@@ -21,21 +21,24 @@ def clean(df_cars_dirty):
     #########################################################################################
     ### Your code starts here ###############################################################
 
-    # Convert to string just in case some values are mixed types
     
     # clean listing_id
     df_cars_cleaned = df_cars_cleaned[df_cars_cleaned['listing_id'].astype(str).str.isdigit()]
     print('Number of records after cleaning listing_id: {}'.format(len(df_cars_cleaned)))
+    
+    # remove type of vehicle unknown
+    df_cars_cleaned = df_cars_cleaned[df_cars_cleaned['type_of_vehicle'] != 'unknown']
+    print('Number of records after cleaning type_of_vehicle: {}'.format(len(df_cars_cleaned)))
     
     # clean invalid year and owner
     df_cars_cleaned = df_cars_cleaned[(df_cars_cleaned['manufactured'] < 2025) & (df_cars_cleaned['manufactured'] > 1900)]
     df_cars_cleaned = df_cars_cleaned[df_cars_cleaned['no_of_owners'] >= 1]
     print('Number of records after cleaning manufactured year and no_of_owners: {}'.format(len(df_cars_cleaned)))
     
-    # clean type_of_vehicle
-    df_cars_cleaned['type_of_vehicle'] = df_cars_cleaned['type_of_vehicle'].replace('unknown', np.nan)
-    print('Number of records after cleaning type_of_vehicle: {}'.format(len(df_cars_cleaned)))
-    
+    # merge make shortform
+    df_cars_cleaned['make'] = df_cars_cleaned['make'].replace('mercedes', 'mercedes-benz')
+    df_cars_cleaned['make'] = df_cars_cleaned['make'].replace('rolls', 'rolls-royce')
+    print('Number of records after cleaning make: {}'.format(len(df_cars_cleaned)))
     
     ### Your code ends here #################################################################
     #########################################################################################
