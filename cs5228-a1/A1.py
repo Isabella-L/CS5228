@@ -117,18 +117,31 @@ def get_noise_dbscan(X, eps=0.0, min_samples=0):
     #########################################################################################
     ### Your code starts here ###############################################################
     
+    n = X.shape[0]
+    dist_matrix = euclidean_distances(X, X)
+    
     ### 2.1 a) Identify the indices of all core points
-    
-    
+    core_point_indices = []
+    for i in range(n):
+        neighbors = np.where(dist_matrix[i] <= eps)[0]  # indices of neighbors
+        if len(neighbors) >= min_samples:
+            core_point_indices.append(i)
     ### Your code ends here #################################################################
     #########################################################################################
-    
-    
+
     #########################################################################################
     ### Your code starts here ###############################################################
     
     ### 2.1 b) Identify the indices of all noise points ==> noise_point_indices
-    
+    noise_point_indices = []
+    for i in range(n):
+        if i in core_point_indices:
+            continue  # skip core
+        # Check if it has any core point neighbor
+        neighbors = np.where(dist_matrix[i] <= eps)[0]
+        if not any(j in core_point_indices for j in neighbors):
+            noise_point_indices.append(i)
+            
     
     ### Your code ends here #################################################################
     #########################################################################################
