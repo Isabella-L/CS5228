@@ -169,9 +169,8 @@ def get_noise_dbscan(X, eps=0.0, min_samples=0):
     for i in range(n):
         if i in core_point_indices:
             continue  # skip core
-        # Check if it has any core point neighbor
-        neighbors = np.where(dist_matrix[i] <= eps)[0]
-        if not any(j in core_point_indices for j in neighbors):
+        # check if point is close to any core point
+        if not np.any(dist_matrix[i, core_point_indices] <= eps):
             noise_point_indices.append(i)
             
     
